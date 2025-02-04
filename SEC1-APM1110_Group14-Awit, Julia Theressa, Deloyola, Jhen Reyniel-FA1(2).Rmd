@@ -1,0 +1,45 @@
+---
+title: "Stem-and-Leaf and Box Plots by Gender"
+output: html_document
+---
+
+## Exercise
+For the class of 50 students of computing detailed in Exercise 1.1, use R to:
+
+1. Form the stem-and-leaf display for each gender, and discuss the advantages of this representation compared to the traditional histogram.
+2. Construct a box-plot for each gender and discuss the findings.
+
+## Solution
+
+### (a) Stem-and-Leaf Display
+```{r}
+# Load the dataset (replace 'path/to/your/dataset.csv' with the actual file path)
+data <- read.csv("path/to/your/dataset.csv")
+
+# Stem-and-Leaf Display for Male
+cat("Stem-and-Leaf for Male:\n")
+stem(data$arch1[data$gender == "Male"])
+
+# Stem-and-Leaf Display for Female
+cat("\nStem-and-Leaf for Female:\n")
+stem(data$arch1[data$gender == "Female"])
+
+# Advantages of Stem-and-Leaf Display:
+# - Retains raw data values while giving an overview of distribution.
+# - Easier to identify individual values compared to histograms.
+# - Useful for smaller datasets.
+```
+
+### (b) Box Plot for Each Gender
+```{r}
+# Box plot of 'arch1' scores by gender
+boxplot(arch1 ~ gender, data = data,
+        main = "Box Plot of Scores by Gender",
+        xlab = "Gender",
+        ylab = "Scores",
+        col = c("lightblue", "pink"))
+
+# Findings:
+# - The box plot reveals the median, range, and any outliers for each gender.
+# - Compare distributions to observe differences in spread, central tendency, and variability.
+```

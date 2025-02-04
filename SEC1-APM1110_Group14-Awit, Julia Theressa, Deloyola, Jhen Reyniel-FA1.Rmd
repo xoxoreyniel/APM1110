@@ -1,0 +1,58 @@
+---
+title: "Converted Notebook"
+output: html_document
+---
+
+
+```{r}
+from google.colab import files
+uploaded = files.upload()
+```
+
+```{r}
+install.packages("e1071")
+```
+
+1. 1. Write the skewness program, and use it to calculate the skewness coefficient of the four examination subjects in results.txt (results.csv). What can you say about these data?
+
+
+```{r}
+library(e1071)
+
+results <- read.csv("results.csv")
+
+# View the first few rows of the data
+head(results)
+
+# Calculate skewness using the exact formula from e1071
+skewness_arch1 <- skewness(results$arch1, na.rm = TRUE)
+skewness_arch2 <- skewness(results$arch2, na.rm = TRUE)
+skewness_prog1 <- skewness(results$prog1, na.rm = TRUE)
+skewness_prog2 <- skewness(results$prog2, na.rm = TRUE)
+
+# Print the exact skewness values
+skewness_arch1
+skewness_arch2
+skewness_prog1
+skewness_prog2
+
+# Pearson's approximate skewness formula
+pearson_skewness <- function(data) {
+  mean_val <- mean(data, na.rm = TRUE)
+  median_val <- median(data, na.rm = TRUE)
+  std_dev <- sd(data, na.rm = TRUE)
+  return(3 * (mean_val - median_val) / std_dev)
+}
+
+# Calculate Pearson's skewness for each subject
+pearson_skewness_arch1 <- pearson_skewness(results$arch1)
+pearson_skewness_arch2 <- pearson_skewness(results$arch2)
+pearson_skewness_prog1 <- pearson_skewness(results$prog1)
+pearson_skewness_prog2 <- pearson_skewness(results$prog2)
+
+# Print Pearson's skewness values
+pearson_skewness_arch1
+pearson_skewness_arch2
+pearson_skewness_prog1
+pearson_skewness_prog2
+```
