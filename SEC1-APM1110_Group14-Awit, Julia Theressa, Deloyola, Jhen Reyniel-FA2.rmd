@@ -1,0 +1,77 @@
+---
+jupyter:
+  colab:
+  kernelspec:
+    display_name: R
+    name: ir
+  language_info:
+    name: R
+  nbformat: 4
+  nbformat_minor: 0
+---
+
+::: {.cell .markdown id="5KMi3touNEop"}
+SEC1-APM1110_Group14-Awit, Julia Theressa, Deloyola, Jhen Reyniel-FA2
+:::
+
+::: {.cell .markdown id="qpqBDxB11RLL"}
+1.  An experiment consists of tossing two fair coins. Use R to simulate
+    this experiment 100 times and obtain the relative frequency of each
+    possible outcome. Hence, estimate the probability of getting one
+    head and one tail in any order.
+:::
+
+::: {.cell .code execution_count="21" colab="{\"base_uri\":\"https://localhost:8080/\"}" id="axAg-yOvyy2i" outputId="a426322e-c220-4caf-f1fc-6f8a475a35ef"}
+``` python
+set.seed(123)
+
+coin1 <- sample(c("head", "tail"), size=100, replace=TRUE, prob = c(0.5, 0.5))
+coin2 <- sample(c("head", "tail"), size=100, replace=TRUE, prob = c(0.5, 0.5))
+result <- paste(coin1, coin2, sep="-")
+freq <- table(result)
+print("Relative Frequency: ")
+print(freq)
+prob <- sum(freq[c("head-tail", "tail-head")])
+print("Estimate the probability of getting one head and one tail in any order: ")
+```
+
+::: {.output .stream .stdout}
+    [1] "Relative Frequency: "
+    result
+    head-head head-tail tail-head tail-tail 
+           22        25        28        25 
+    [1] "Estimate the probability of getting one head and one tail in any order: "
+:::
+:::
+
+::: {.cell .markdown id="e5UqQbSq1ZLT"}
+1.  An experiment consists of rolling a die. Use R to simulate this
+    experiment 600 times and obtain the relative frequency of each
+    possible outcome. Hence, estimate the probability of getting each of
+    1, 2, 3, 4, 5, and 6.
+:::
+
+::: {.cell .code execution_count="13" colab="{\"base_uri\":\"https://localhost:8080/\"}" id="VM4RUvRg1cL7" outputId="d935740d-70a2-4551-a178-c81feacb4abe"}
+``` python
+set.seed(123)
+
+rolls <- sample(1:6, size=600, replace=TRUE)
+freq <- table(rolls)/600
+prob <- freq
+print("Relative Frequencies:")
+print(freq)
+print("Estimated Probabilites:")
+print(prob)
+```
+
+::: {.output .stream .stdout}
+    [1] "Relative Frequencies:"
+    rolls
+            1         2         3         4         5         6 
+    0.1766667 0.1700000 0.1600000 0.1533333 0.1666667 0.1733333 
+    [1] "Estimated Probabilites:"
+    rolls
+            1         2         3         4         5         6 
+    0.1766667 0.1700000 0.1600000 0.1533333 0.1666667 0.1733333 
+:::
+:::
