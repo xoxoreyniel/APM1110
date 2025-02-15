@@ -1,0 +1,60 @@
+---
+title: "FA3" 
+author: "SEC1-APM1110_Group14-Awit, Julia Theressa, Deloyola, Jhen Reyniel-FA3" 
+output: pdf_document
+date: "02-15-2025"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo=TRUE)
+``` 
+
+
+2.  A binary communication channel carries data as one of two sets of signals denoted by 0 and 1. Owing to noise, a transmitted 0 is sometimes received as a 1, and a transmitted 1 is sometimes received as a 0. For a given channel, it can be assumed that a transmitted 0 is correctly received with probability 0.95, and a transmitted 1 is correctly received with probability 0.75. Also, 70% of all messages are transmitted as a 0. If a signal is sent, determine the probability that:
+
+(a) 1 was received;
+(b) 1 was transmitted given than a 1 was received. 
+
+```{r} 
+## Given probabilities
+P_0 <- 0.70   ##P(transmit 0)
+P_1 <- 0.30   ##P(transmit 1)
+P_R1_T0 <- 0.05  ##P(receive 1 | transmit 0)
+P_R1_T1 <- 0.75  ##P(receive 1 | transmit 1)
+
+## (a) P(receive 1)
+P_R1 <- (P_0 * P_R1_T0) + (P_1 * P_R1_T1)
+print(P_R1)
+
+## (b) P(transmit\receive 1)
+P_T1_R1 <- (P_1 * P_R1_T1) / P_R1
+print(P_T1_R1)
+``` 
+
+7.  There are three employees working at an IT company: Jane, Amy, and Ava, doing 10%, 30%, and 60% of the programming, respectively. 8% of Jane’s work, 5% of Amy’s work, and just 1% of Ava‘s work is in error. What is the overall percentage of error? If a program is found with an error, who is the most likely person to have written it? 
+
+```{r}
+## Given probabilities
+P_Jane <- 0.10
+P_Amy <- 0.30
+P_Ava <- 0.60
+
+P_Error_Jane <- 0.08
+P_Error_Amy <- 0.05
+P_Error_Ava <- 0.01
+
+## Overall error rate
+P_Error <- (P_Jane * P_Error_Jane) + (P_Amy * P_Error_Amy) + (P_Ava * P_Error_Ava)
+print(P_Error * 100)  # Percentage
+
+## P(writer(error))
+P_Jane_Error <- (P_Jane * P_Error_Jane) / P_Error
+P_Amy_Error <- (P_Amy * P_Error_Amy) / P_Error
+P_Ava_Error <- (P_Ava * P_Error_Ava) / P_Error
+
+print(P_Jane_Error)
+print(P_Amy_Error)
+print(P_Ava_Error)
+``` 
+
+
