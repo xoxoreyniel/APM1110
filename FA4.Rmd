@@ -1,0 +1,71 @@
+---
+title: "FA4" 
+author: "SEC1-APM1110_Deloyola, Jhen Reyniel-FA4" 
+output: pdf_document
+date: "03-03-2025"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo=TRUE)
+``` 
+#Github Link: 
+
+6.1.5 A geospatial analysis system has four sensors supplying images. The percentage of images supplied by each sensor and the percentage of images relevant to a query are shown in the following table. 
+
+What is the overall percentage of relevant images?  
+```{r}
+sensors <- data.frame(
+  sensor = 1:4,
+  supplied = c(15, 20, 25, 40),
+  relevant = c(50, 60, 80, 85)
+)
+
+# Calculate the overall relevant percentage
+overall_percentage <- sum(sensors$supplied * sensors$relevant) / 100
+
+print(paste("The overall relevant percentage is: ", overall_percentage,"%"))
+```
+
+6.1.6 A fair coin is tossed twice.
+
+Let E1 be the event that both tosses have the same outcome, that is,
+E1 = (HH, TT).
+Let E2 be the event that the first toss is a head, that is, E2 = (HH, HT).
+Let E3 be the event that the second toss is a head, that is, E3 = (TH, HH).
+Show that E1, E2, and E3 are pairwise independent but not mutually independent. 
+```{r}
+# sample space for two coin tosses
+sample_space <- c("head-head", "head-tail", "tail-head", "tail-tail")
+
+# events
+E1 <- c("head-head", "tail-tail")  # Both tosses are the same
+E2 <- c("head-head", "head-tail")  # First toss = head
+E3 <- c("tail-head", "head-head")  # Second toss = head
+
+# individual probabilities
+P_E1 <- length(E1) / length(sample_space)
+P_E2 <- length(E2) / length(sample_space)
+P_E3 <- length(E3) / length(sample_space)
+
+# pairwise intersection probabilities
+P_E1_E2 <- length(intersect(E1, E2)) / length(sample_space)
+P_E1_E3 <- length(intersect(E1, E3)) / length(sample_space)
+P_E2_E3 <- length(intersect(E2, E3)) / length(sample_space)
+
+# joint probability of all three 
+P_E1_E2_E3 <- length(intersect(intersect(E1, E2), E3)) / length(sample_space)
+
+# pairwise independence
+PI <- list(
+  E1_E2 = (P_E1_E2 == P_E1 * P_E2),
+  E1_E3 = (P_E1_E3 == P_E1 * P_E3),
+  E2_E3 = (P_E2_E3 == P_E2 * P_E3)
+)
+
+mutual_independence <- (P_E1_E2_E3 == P_E1 * P_E2 * P_E3)
+
+print("Pairwise Independence:")
+print(PI)
+print("Mutual Independence:")
+print(mutual_independence)
+```
