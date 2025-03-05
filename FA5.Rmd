@@ -1,0 +1,52 @@
+---
+title: "FA5" 
+author: "SEC1-APM1110_Deloyola, Jhen Reyniel L. - FA5" 
+output: pdf_document
+date: "03-05-2025"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo=TRUE)
+``` 
+
+#Github Link: 
+
+7.1.6 An email message can travel through one of three server routes. The percentage of errors in each of the servers and the percentage of messages that travel through each route are shown in the following table. Assume that the servers are independent.  
+```{r}
+#data 
+route <- c("Server 1", "Server 2", "Server 3")
+message <- c(0.40, 0.25, 0.35)  # percentage of messages through each server
+error <- c(0.01, 0.02, 0.015)  # error rates of each server
+
+# (a) 
+prob_error <- sum(message * error)
+
+# (b) 
+prob_no_error <- 1 - prob_error
+
+# (c)
+no_error_given <- (message[1] * (1 - error[1])) / prob_no_error
+
+# print result
+cat("(a) The probability of receiving an email containing an error is: ", prob_error, "\n")
+cat("(b) The probability of receiving an email without error is: ", prob_no_error, "\n")
+cat("(c) The probability that a message was sent through Server 1 given no error is: ", no_error_given, "\n")
+```
+
+7.1.13 A malicious spyware can infect a computer system through the internet or through email. The spyware comes through the internet 70% of the time and 30% of the time, it gets in through email. If it enters via the internet, the anti-virus detector will detect it with probability 0.6, and via email, it is detected with probability 0.8. 
+```{r}
+# data
+prob_source <- c(0.70, 0.30)  # probability of spyware coming through internet and email
+prob_detection <- c(0.60, 0.80)  # probability of detection for internet and email
+
+# (a) probability of spyware
+prob_infection <- sum(prob_source * (1 - prob_detection))
+
+# (b) infected spyware
+prob_detected <- sum(prob_source * prob_detection)  # Total probability of detection
+internet_detected <- (prob_source[1] * prob_detection[1]) / prob_detected
+
+# print results
+cat("(a) The probability that the spyware infects the system:", sprintf("%.2f (%.2f%%)", prob_infection, prob_infection * 100), "\n")
+cat("(b) The probability that the spyware came through the internet given it was detected:", sprintf("%.2f (%.2f%%)", internet_detected, internet_detected * 100), "\n")
+``` 
