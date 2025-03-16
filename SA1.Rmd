@@ -1,0 +1,134 @@
+---
+title: "SA1"
+author: "Awit, Julia Theressa, Deloyola, Jhen Reyniel"
+date: "2025-03-16"
+output: pdf_document
+---
+
+##Github Link: https://github.com/xoxoreyniel/APM1110/blob/main/SA1.Rmd
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Exercise 1: Probability of a defective product from a randomly selected factory 
+```{r}
+cat("Enter production proportions (x1, x2, x3) such that they sum to 1:\n")
+x1 <- as.numeric(readline(prompt = "Enter production proportion for Factory 1 (0.10 to 0.40): "))
+x2 <- as.numeric(readline(prompt = "Enter production proportion for Factory 2 (0.10 to 0.40): "))
+x3 <- as.numeric(readline(prompt = "Enter production proportion for Factory 3 (0.10 to 0.40): "))
+
+cat("\nEnter defect rates (y1, y2, y3) such that they sum to 0.12:\n")
+y1 <- as.numeric(readline(prompt = "Enter defective rate for Factory 1 (0.01 to 0.05): "))
+y2 <- as.numeric(readline(prompt = "Enter defective rate for Factory 2 (0.01 to 0.05): "))
+y3 <- as.numeric(readline(prompt = "Enter defective rate for Factory 3 (0.01 to 0.05): "))
+
+if (!isTRUE(all.equal(sum(x1, x2, x3), 1))) {
+  stop("Error: x1 + x2 + x3 must sum to 1.")
+}
+
+if (!isTRUE(all.equal(sum(y1, y2, y3), 0.12))) {
+  stop("Error: y1 + y2 + y3 must sum to 0.12.")
+}
+
+if (any(c(x1, x2, x3) < 0.10) || any(c(x1, x2, x3) > 0.40)) {
+  stop("Error: x1, x2, and x3 must be between 0.10 and 0.40.")
+}
+
+if (any(c(y1, y2, y3) < 0.01) || any(c(y1, y2, y3) > 0.05)) {
+  stop("Error: y1, y2, and y3 must be between 0.01 and 0.05.")
+}
+
+# alculate the probability of selecting a defective product
+P_defective <- x1 * y1 + x2 * y2 + x3 * y3
+
+cat("The probability that a randomly selected product is defective is:", P_defective, "\n")
+```
+
+## Exercise 2: Discrete Random Variables
+
+```{r}
+# function to validate probability distribution
+validate_probs <- function(probs) {
+  return(all(probs >= 0 & probs <= 1) && sum(probs) == 1)
+}
+
+# univariate discrete random variable
+x_values <- c(1, 2, 3, 4, 5)
+probs <- c(0.1, 0.2, 0.3, 0.2, 0.2)
+
+if (validate_probs(probs)) {
+  mean_x <- sum(x_values * probs)
+  var_x <- sum(((x_values - mean_x)^2) * probs)
+  cat("Mean:", mean_x, "\nVariance:", var_x, "\n")
+} else {
+  stop("Invalid probability distribution")
+}
+# Defining bivariate probability distribution
+x_vals <- c(1, 2)
+y_vals <- c(1, 2)
+prob_matrix <- matrix(c(0.2, 0.3, 0.1, 0.4), nrow = 2, byrow = TRUE)
+
+# Marginal distributions
+px <- rowSums(prob_matrix)
+py <- colSums(prob_matrix)
+
+# Conditional probabilities
+p_y_given_x <- prob_matrix / px
+
+cat("Marginal P(X):", px, "\n")
+cat("Marginal P(Y):", py, "\n")
+cat("Conditional P(Y | X):\n")
+print(p_y_given_x)
+``` 
+
+## Exercise 3: Simulation Experiment
+
+```{r}
+search_simulation <- function() {
+  key_phrase <- readline("Enter the key phrase you are searching for: ")
+  p <- as.numeric(readline("Enter the probability p that a site contains the key phrase (between 0 and 1): "))
+  
+  if (p < 0 || p > 1) {
+    stop("Error: Probability p must be between 0 and 1.")
+  }
+  
+  trials <- 10000  
+  search_counts <- rgeom(trials, prob = p) + 1 
+  
+  mean_x <- mean(search_counts)
+  var_x <- var(search_counts)
+  
+  cat("Key phrase searched:", key_phrase, "\n")
+  cat("Mean number of searches before finding", key_phrase, ":", mean_x, "\n")
+  cat("Variance of searches:", var_x, "\n")
+  
+  hist(search_counts, probability = TRUE, col = "royalblue", breaks = 20, 
+       main = paste("Simulated Distribution of Searches for '", key_phrase, "'"),
+       xlab = "Number of Searches", ylab = "Density")
+}
+
+# Markov memoryless property
+markov_test <- function() {
+  trials <- 10000
+  p <- 0.6  
+  key_phrase <- "target word"  
+  
+  search_counts <- rgeom(trials, prob = p) + 1  
+  
+  p_x_4_given_x_greater_3 <- sum(search_counts == 4) / sum(search_counts > 3)
+  p_x_1 <- sum(search_counts == 1) / trials
+  
+  cat("P(X = 4 | X > 3) for", key_phrase, ":", p_x_4_given_x_greater_3, "\n")
+  cat("P(X = 1) for", key_phrase, ":", p_x_1, "\n")
+  
+  p_x_5_given_x_greater_3 <- sum(search_counts == 5) / sum(search_counts > 3)
+  p_x_2 <- sum(search_counts == 2) / trials
+  
+  cat("P(X = 5 | X > 3) for", key_phrase, ":", p_x_5_given_x_greater_3, "\n")
+  cat("P(X = 2) for", key_phrase, ":", p_x_2, "\n")
+}
+
+search_simulation()
+markov_test()
+```
