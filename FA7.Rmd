@@ -1,0 +1,88 @@
+---
+title: "APM1110-Sec1-FA7"
+author: "Awit, Julia Theressa, Cesista, Kristen Jelaena, Deloyola, Jhen Reyniel"
+date: "2025-04-10"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+##Github Link: https://github.com/xoxoreyniel/APM1110/blob/main/FA7.Rmd
+
+**The chosen scenario is how long one uses the available computers at the Office of the Universiy Registar. Here are the gathered data:**   
+1. 6 minutes 24 seconds (384 seconds)
+2. 6 minutes 38 seconds (398 seconds)
+3. 5 minutes 52 seconds (352 seconds)
+4. 6 minutes 33 seconds (393 seconds)
+5. 7 minutes 6 seconds (426 seconds)
+6. 10 minutes 32 seconds (632 seconds)
+7. 10 minutes 8 seconds (608 seconds)
+8. 8 minutes 56 seconds (536 seconds)
+9. 11 minutes 3 seconds (663 seconds)
+10. 5 minutes 40 seconds (340 seconds)
+11. 1 minute 43 seconds (103 seconds)
+12. 5 minutes 10 seconds (310 seconds)
+13. 6 minutes 28 seconds (388 seconds)
+14. 7 minutes 48 seconds (468 seconds)
+15. 6 minutes 26 seconds (386 seconds)
+16. 8 minutes 15 seconds (495 seconds)
+17. 5 minutes 57 seconds (357 seconds)
+18. 6 minutes 37 seconds (397 seconds)
+19. 10 minutes 22 seconds (622 seconds)
+20. 7 minutes 4 seconds (424 seconds)
+21. 9 minutes 36 seconds (576 seconds)
+22. 8 minutes 10 seconds (490 seconds)
+23. 6 minutes 10 seconds (370 seconds)
+24. 7 minutes 46 seconds (466 seconds)
+25. 5 minutes 34 seconds (334 seconds)
+26. 7 minutes 8 seconds (428 seconds)
+27. 6 minutes 58 seconds (418 seconds)
+28. 7 minutes 27 seconds (447 seconds)
+29. 7 minutes 14 seconds (434 seconds)
+30. 8 minutes 39 seconds (519 seconds)
+```{r}
+usage_times_seconds <- c(384, 398, 352, 393, 426, 632, 608, 536, 663, 340,
+                           103, 310, 388, 468, 386, 495, 357, 397, 622, 424,
+                           576, 490, 370, 466, 334, 428, 418, 447, 434, 519)
+
+mean_usage_time_seconds <- mean(usage_times_seconds)
+mean_usage_time_minutes <- floor(mean_usage_time_seconds/60)
+mean_usage_time_remaining_seconds <- mean_usage_time_seconds%%60
+usage_time_limit <- 6 * 60
+lambda <- 1 / mean_usage_time_seconds
+prob_under_6_minutes <- 1 - exp(-lambda * usage_time_limit)
+cat(sprintf("The mean usage time is %d minutes and %0.2f seconds.", mean_usage_time_minutes, mean_usage_time_remaining_seconds))
+cat(sprintf("\nThe calculated lambda (rate parameter) is %0.4f.", lambda))
+cat(sprintf("\nThe probability of usage time being under 6 minutes is %0.4f.", prob_under_6_minutes))
+```
+**Interpretation and real-world implications:** During our data gathering, as only a few needed to use the computers there was no problem in waiting. However, during enrollment season, there is a large number of people needing to use the computers. As the usage time can go up to longer than 10 minutes, this shows that the university should invest in more computers (as only two were available during our data gathering) or the process needs to be further streamlined (as we noticed several needed help from the guards while using the computers).
+
+**Report and Findings:** This study analyzed how long students use the computers at the Office of the University Registrar. This becomes especially relevant during high-demand periods like enrollment, where wait times and computer access are critical. We observed 30 students and recorded their usage times, then converted everything into seconds so it's easier to analyze. Using R programming, Based on the collected data, the mean usage time was calculated to be approximately 7 minutes and 18.80 seconds, or 438.8 seconds. The rate parameter lambda was found to be 0.0023. Using the exponential distribution model, the probability of a student finishing their task in under 6 minutes (360 seconds) was estimated at 55.98%.
+```{r}
+usage_times_seconds <- c(384, 398, 352, 393, 426, 632, 608, 536, 663, 340,
+                         103, 310, 388, 468, 386, 495, 357, 397, 622, 424,
+                         576, 490, 370, 466, 334, 428, 418, 447, 434, 519)
+
+##Calculate the rate parameter lambda (1 / mean)
+lambda <- 1 / mean(usage_times_seconds)
+
+hist(usage_times_seconds,
+     breaks = 10,
+     probability = TRUE,
+     col = "Pink",
+     main = "Histogram of Observed Times vs Exponential PDF Overlay",
+     xlab = "Usage Time (seconds)",
+     ylab = "Density")
+curve(dexp(x, rate = lambda),
+      col = "blue",
+      lwd = 2,
+      add = TRUE)
+
+legend("topright", legend = c("Observed Times", "Exponential PDF"),
+       col = c("pink", "blue"),
+       fill = c("pink", "blue"),
+       border = "black")
+```
+
