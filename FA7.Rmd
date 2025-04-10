@@ -1,0 +1,94 @@
+---
+title: "FA7"
+author: "Group"
+date: "2025-04-10"
+output: html_document
+---
+
+```{r, echo=FALSE}
+intervals <- c(
+  "00:01:24.359", "00:00:27.575", "00:00:44.872", "00:01:14.810", "00:00:02.989",
+  "00:00:06.521", "00:00:02.769", "00:01:11.726", "00:02:06.428", "00:00:28.773",
+  "00:00:53.327", "00:00:12.752", "00:00:07.608", "00:00:02.713", "00:01:06.887",
+  "00:00:04.112", "00:01:20.369", "00:00:03.009", "00:00:07.110", "00:02:06.023",
+  "00:00:06.136", "00:00:15.328", "00:00:26.034", "00:00:04.230", "00:00:57.618",
+  "00:00:04.030", "00:00:10.538", "00:00:31.063", "00:00:05.023", "00:00:55.850",
+  "00:01:15.879", "00:01:47.911", "00:00:36.460", "00:00:09.203", "00:00:06.780",
+  "00:00:04.845", "00:01:07.385", "00:01:26.927", "00:00:13.199", "00:00:50.096",
+  "00:01:12.152", "00:01:45.032", "00:00:49.731"
+)
+
+time_to_minutes <- function(x) {
+  parts <- as.numeric(unlist(strsplit(x, ":")))
+  return((parts[1]*3600 + parts[2]*60 + parts[3]) / 60)
+}
+interval_minutes <- sapply(intervals, time_to_minutes)
+
+mean_time <- mean(interval_minutes)
+lambda <- 1 / mean_time
+```
+
+#### Average time in minutes:
+
+```{r, echo=FALSE}
+cat("Mean time (minutes):", mean_time, "\n")
+```
+
+#### Rate per minute:
+
+```{r, echo=FALSE}
+cat("Lambda (rate per minute):", lambda, "\n")
+```
+
+#### Student taps per minute:
+
+```{r, echo=FALSE}
+prob_less_than_1 <- pexp(1, rate = lambda)
+cat("P(Student taps in within 1 minute):", prob_less_than_1, "\n")
+```
+
+```{r, echo=FALSE}
+hist(interval_minutes, probability = TRUE, main = "Time Between Tap-Ins (FEU Library)",
+     xlab = "Minutes", col = "skyblue", breaks = 10)
+curve(dexp(x, rate = lambda), col = "red", lwd = 2, add = TRUE)
+```
+
+#### PDF
+
+```{r, echo=FALSE}
+x <- 1
+pdf_value <- dexp(x, rate = lambda)
+cat("PDF at x = 1 minute:", pdf_value, "\n")
+
+curve(dexp(x, rate = lambda), from = 0, to = 5,
+      main = "Exponential PDF (Tap-in Wait Times)",
+      xlab = "Minutes", ylab = "Density",
+      col = "red", lwd = 2)
+```
+
+#### CDF
+
+```{r, echo=FALSE}
+cdf_1min <- pexp(1, rate = lambda)
+cat("CDF at x = 1 minute:", cdf_1min, "\n")
+curve(pexp(x, rate = lambda), from = 0, to = 5,
+      main = "Exponential CDF (Tap-in Wait Times)",
+      xlab = "Minutes", ylab = "Cumulative Probability",
+      col = "blue", lwd = 2)
+```
+
+#### Q-Q Plot
+
+```{r, echo=FALSE}
+qqplot(qexp(ppoints(length(interval_minutes)), rate = lambda),
+       interval_minutes,
+       main = "Q-Q Plot: Observed vs Exponential",
+       xlab = "Theoretical Quantiles", ylab = "Observed Quantiles")
+abline(0, 1, col = "red", lwd = 2)
+```
+
+#### Statistical Goodness-of-Fit Test
+
+```{r, echo=FALSE}
+ks.test(interval_minutes, "pexp", rate = lambda)
+```
