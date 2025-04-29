@@ -1,0 +1,76 @@
+---
+title: "FA8"
+author: "Deloyola, Jhen Reyniel L."
+date: "2025-04-28"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+1. An analogue signal received at a detector, measured in microvolts, is normally distributed with mean of 200 and variance of 256. 
+(a) What is the probability that the signal will exceed 224 microV?
+```{r}
+mu1 <- 200    
+var1 <- 256      
+sd1 <- sqrt(var1)
+
+p_a <- pnorm(224, mean = mu1, sd = sd1, lower.tail = FALSE)
+cat("P(X > 224):", p_a, "\n")
+```
+(b) What is the probability that it will be between 186 and 224 microV?
+```{r}
+p_b <- pnorm(224, mean = mu1, sd = sd1) - pnorm(186, mean = mu1, sd = sd1)
+cat("P(186 < X < 224):", p_b, "\n")
+```
+(c) What is the micro voltage below which 25% of the signals will be?
+```{r}
+q_c <- qnorm(0.25, mean = mu1, sd = sd1)
+cat("25th percentile voltage:", q_c, "microV\n")
+```
+(d) What is the probability that the signal will be less than 240 microV, given that it is larger than 210 microV?
+```{r}
+num_d <- pnorm(240, mean = mu1, sd = sd1) - pnorm(210, mean = mu1, sd = sd1)
+den_d <- pnorm(210, mean = mu1, sd = sd1, lower.tail = FALSE)
+p_d <- num_d / den_d
+cat("P(X < 240 | X > 210):", p_d, "\n")
+```
+(e) Estimate the interquartile range.
+```{r}
+q1_e <- qnorm(0.25, mean = mu1, sd = sd1)
+q3_e <- qnorm(0.75, mean = mu1, sd = sd1)
+iqr_e <- q3_e - q1_e
+cat("Interquartile Range (IQR):", iqr_e, "microV\n")
+```
+(f) What is the probability that the signal will be less than 220 microV, given that it is larger than 210 microV?
+```{r}
+num_f <- pnorm(220, mean = mu1, sd = sd1) - pnorm(210, mean = mu1, sd = sd1)
+den_f <- pnorm(210, mean = mu1, sd = sd1, lower.tail = FALSE)
+p_f <- num_f / den_f
+cat("(X < 220 | X > 210):", p_f, "\n")
+```
+(g) If we know that a received signal is greater that 200 microV, what is the probability that is in fact greater than 220 microV?
+```{r}
+num_g <- pnorm(220, mean = mu1, sd = sd1, lower.tail = FALSE)
+den_g <- pnorm(200, mean = mu1, sd = sd1, lower.tail = FALSE)
+p_g <- num_g / den_g
+cat("P(X > 220 | X > 200):", p_g, "\n")
+```
+
+2. A manufacturer of a particular type of computer system is interested in improving its customer support services. As a first step, its marketing department has been charged with the responsibility of summarizing the extent of customer problems in terms of system failures. Over a period of six months, customers were surveyed and the amount of downtime (in minutes) due to system failures they had experienced during the previous month was collected. The average downtime was found to be 25 minutes and a variance of 144. If it can be assumed that downtime is normally distributed:
+(a) obtain bounds which will include 95% of the downtime of all the customers;
+```{r}
+mu2 <- 25
+var2 <- 144
+sd2 <- sqrt(var2)
+
+lower_a2 <- qnorm(0.025, mean = mu2, sd = sd2)
+upper_a2 <- qnorm(0.975, mean = mu2, sd = sd2)
+cat("95% of downtimes are between:", lower_a2, "and", upper_a2, "minutes\n")
+```
+(b) obtain the bound above which 10% of the downtime is included.
+```{r}
+bound_b2 <- qnorm(0.90, mean = mu2, sd = sd2)
+cat("10% of downtimes are above:", bound_b2, "minutes\n")
+```
